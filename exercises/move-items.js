@@ -66,43 +66,43 @@
 
 // Your code goes here...
 
+const updateCollections = (id, direction) => {
+    const item = document.getElement.id;
+    direction = item.parameterElement.id;
 
-// Task 1: Select all elements with the class of "item"
-const allItems = document.querySelectorAll('.item');
+    item 
+        .querySelector("i")
+        .classList.remove(
+            "class",
+            direction === "main" ? "fa-heart-circle-plus" : "fa-heart-crack"
 
-// Task 2: Select the main container by the id of "main"
-const main = document.getElementById('main');
+        );
 
-// Task 3: Select the favorites container by the id of "favs"
-const favs = document.getElementById('favs');
+        item
+        .querySelector("i")
+        .classList.add(
+            direction === "favs" ? "fa-heart-circle-plus" : "fa-heart-crack"
+        );
 
-// Task 4: Create the updateCollections function
-function updateCollections(id, direction) {
-    const item = document.getElementById(id);
-    if (direction === 'toFavs') {
-        favs.appendChild(item);
-        item.classList.remove('fa-heart-circle-plus');
-        item.classList.add('fa-heart-crack');
-    } else if (direction === 'toMain') {
-        main.appendChild(item);
-        item.classList.remove('fa-heart-crack');
-        item.classList.add('fa-heart-circle-plus');
-    }
-}
-
-// Task 5: Add click event listeners to all items
-allItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const currentParentId = item.parentElement.id;
-        const itemId = item.id;
-        let direction;
-        
-        if (currentParentId === 'main') {
-            direction = 'toFavs';
-        } else if (currentParentId === 'favs') {
-            direction = 'toMain';
+        if(direction === "favs") {
+            main.appendChild(item);
+        } else {
+            favs.appendChild(item);
         }
+};
 
-        updateCollections(itemId, direction);
+    allItems.forEach((item) => {
+        item.addEventListener("click", () => {
+            const currentParentId = item.parameterElement.id;
+            const itemId = item.id;
+            let direction;
+
+            if (currentParentId === "main") {
+                direction = "toFavs";
+            } else if (currentParentId === "favs"){
+                direction = "toMain";
+            }
+
+            updateCollections(itemId, direction);
+        });
     });
-});

@@ -38,54 +38,60 @@
  */
 
 // Your code goes here...
-document.addEventListener('DOMContentLoaded', () => {
-    const itemsContainer = document.getElementById('items-container');
+// Select the container that holds all the items
+const cardsContainer = document.querySelector('.cardsContainer');
 
-    // Function to set background color to red for items in favorites LS
-    function applyFavorites() {
-        const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        favorites.forEach(id => {
-            const item = document.getElementById(id);
-            if (item) {
-                item.classList.add('red');
-            }
-        });
+// Function to get favorites from localStorage
+const getFavorites = () => JSON.parse(localStorage.getItem('favorites')) || [];
+
+// Function to save favorites to localStorage
+const saveFavorites = (favorites) => localStorage.setItem('favorites', JSON.stringify(favorites));
+
+// Function to set the background to red for items listed in favorites LS
+const setFavoritesBackground = () => {
+  const favorites = getFavorites();
+  favorites.forEach(id => {
+    const item = document.getElementById(id);
+    if (item) {
+      item.style.backgroundColor = 'red';
     }
+  });
+};
 
-    // Function to add an id to favorites LS
-    function addToFavorites(id) {
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        if (!favorites.includes(id)) {
-            favorites.push(id);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-        }
+// Run the function to set the background of favorites
+setFavoritesBackground();
+
+// Function to add an id to favorites LS
+const addFavorite = (id) => {
+  const favorites = getFavorites();
+  if (!favorites.includes(id)) {
+    favorites.push(id);
+    saveFavorites(favorites);
+  }
+};
+
+// Function to remove an id from favorites LS
+const removeFavorite = (id) => {
+  let favorites = getFavorites();
+  favorites = favorites.filter(favId => favId !== id);
+  saveFavorites(favorites);
+};
+
+// Callback function to update element background color and localStorage
+const updateBackgroundColor = (event) => {
+  const target = event.target;
+  if (target.classList.contains('card')) {
+    const id = target.id;
+    const isFavorite = target.style.backgroundColor === 'red';
+    if (isFavorite) {
+      target.style.backgroundColor = 'white';
+      removeFavorite(id);
+    } else {
+      target.style.backgroundColor = 'red';
+      addFavorite(id);
     }
+  }
+};
 
-    // Function to remove an id from favorites LS
-    function removeFromFavorites(id) {
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        favorites = favorites.filter(favId => favId !== id);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }
-
-    // Callback function to update the element background color and LS
-    function handleItemClick(event) {
-        if (event.target.classList.contains('item')) {
-            const item = event.target;
-            const itemId = item.id;
-            if (item.classList.contains('red')) {
-                item.classList.remove('red');
-                removeFromFavorites(itemId);
-            } else {
-                item.classList.add('red');
-                addToFavorites(itemId);
-            }
-        }
-    }
-
-    // Add event listener to the container
-    itemsContainer.addEventListener('click', handleItemClick);
-
-    // Apply favorites on page load
-    applyFavorites();
-});
+// Add event listener to the container, pass the callback
+cardsContainer.addEventListener('click', updateBackgroundColor);
