@@ -40,23 +40,6 @@ const sortBtn = document.querySelectorAll('.sortBtn');
  */
 
 // Your code goes here...
-function sortData(direction) {
-    const container = document.getElementById('main');
-    const itemsArray = Array.from(allItems);
-
-    itemsArray.sort((a, b) => {
-        const idA = parseInt(a.id.split('-')[1], 10);
-        const idB = parseInt(b.id.split('-')[1], 10);
-
-        if (direction === 'asc') {
-            return idA - idB;
-        } else if (direction === 'desc') {
-            return idB - idA;
-        }
-    });
-
-    itemsArray.forEach(item => container.appendChild(item));
-}
 
 
 
@@ -71,9 +54,30 @@ function sortData(direction) {
 // Your code goes here...
 
 
-sortBtn.forEach(button => {
-    button.addEventListener('click', () => {
-        const direction = button.dataset.sortdir;
-        sortData(direction);
+const sortData = (direction) => {
+    const main = document.getElementById('main');
+    const itemsArray = Array.from(allItems);
+  
+    itemsArray.sort((a, b) => {
+      const idA = parseInt(a.id, 10);
+      const idB = parseInt(b.id, 10);
+      
+      if (direction === 'asc') {
+        return idA - idB;
+      } else {
+        return idB - idA;
+      }
     });
-});
+  
+    itemsArray.forEach(item => main.appendChild(item));
+  };
+  
+  // Iterate through the every item in sortBtn NodeList and apply the addEventListener click event to each item.
+  // The item click must execute/call the following:
+  // Make the sortData function call, assign the item's dataset sortdir property
+  sortBtn.forEach(button => {
+    button.addEventListener('click', () => {
+      const direction = button.dataset.sortdir;
+      sortData(direction);
+    });
+  });

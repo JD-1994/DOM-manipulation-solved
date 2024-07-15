@@ -66,43 +66,47 @@
 
 // Your code goes here...
 
+const allItems = document.querySelectorAll('.item');
+
+const main = document.getElementById('main');
+
+
+const favs = document.getElementById('favs');
+
+
 const updateCollections = (id, direction) => {
-    const item = document.getElement.id;
-    direction = item.parameterElement.id;
+  const item = document.getElementById(id);
+  const currentParentId = item.parentElement.id;
 
-    item 
-        .querySelector("i")
-        .classList.remove(
-            "class",
-            direction === "main" ? "fa-heart-circle-plus" : "fa-heart-crack"
 
-        );
+  const icon = item.querySelector("i");
+  icon.classList.remove(
+    currentParentId === "main" ? "fa-heart-circle-plus" : "fa-heart-crack"
+  );
+  icon.classList.add(
+    direction === "toFavs" ? "fa-heart-crack" : "fa-heart-circle-plus"
+  );
 
-        item
-        .querySelector("i")
-        .classList.add(
-            direction === "favs" ? "fa-heart-circle-plus" : "fa-heart-crack"
-        );
-
-        if(direction === "favs") {
-            main.appendChild(item);
-        } else {
-            favs.appendChild(item);
-        }
+  
+  if (direction === "toFavs") {
+    favs.appendChild(item);
+  } else {
+    main.appendChild(item);
+  }
 };
 
-    allItems.forEach((item) => {
-        item.addEventListener("click", () => {
-            const currentParentId = item.parameterElement.id;
-            const itemId = item.id;
-            let direction;
+allItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    const currentParentId = item.parentElement.id;
+    const itemId = item.id;
+    let direction;
 
-            if (currentParentId === "main") {
-                direction = "toFavs";
-            } else if (currentParentId === "favs"){
-                direction = "toMain";
-            }
+    if (currentParentId === "main") {
+      direction = "toFavs";
+    } else if (currentParentId === "favs") {
+      direction = "toMain";
+    }
 
-            updateCollections(itemId, direction);
-        });
-    });
+    updateCollections(itemId, direction);
+  });
+});
